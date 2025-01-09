@@ -127,7 +127,7 @@ def save_metrics(metrics,metrics_path) :
     
 def main():
     try:
-        test_data_path = "./data/processed/test_processed_scaler.csv"
+        test_data_path = "./data/processed/test_processed.csv"
         model_path = "models/model.pkl"
         metrics_path = "reports/metrics.json"
         model_name = "Best Model"

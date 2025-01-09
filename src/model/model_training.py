@@ -71,7 +71,7 @@ def save_model(model,filepath):
 
 def main():
     try:
-        data_path = "./data/processed/train_processed_scaler.csv"
+        data_path = "./data/processed/train_processed.csv"
         params_filepath = "params.yaml"
         model_name = "models/model.pkl"
 
