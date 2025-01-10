@@ -30,6 +30,6 @@ jobs:
     
     # Run the DVC pipeline (execute the pipeline using dvc repro)
     - name: dvc pipeline
-      run: dvc repro  # This will run the pipeline based on dvc.yaml
       env:
         DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+      run: dvc repro  # This will run the pipeline based on dvc.yaml
