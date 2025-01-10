@@ -75,8 +75,8 @@ def main():
         os.makedirs(data_processed_path, exist_ok=True)
 
         # Save the processed data
-        save_data(train_processed_data, os.path.join(data_processed_path, "train_processed.csv"))
-        save_data(test_processed_data, os.path.join(data_processed_path, "test_processed.csv"))
+        save_data(train_processed_data, os.path.join(data_processed_path, "train_processed_scaler.csv"))
+        save_data(test_processed_data, os.path.join(data_processed_path, "test_processed_scaler.csv"))
     
     except Exception as e:
         print(f"Error in main processing: {e}")
