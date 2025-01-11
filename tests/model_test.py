@@ -2,6 +2,7 @@ import unittest
 import mlflow
 from mlflow.tracking import MlflowClient
 import os
+from tenacity import retry, stop_after_attempt, wait_fixed
 
 # Ensure the DAGSHUB_TOKEN environment variable is set
 dagshub_token = os.getenv("DAGSHUB_TOKEN")
@@ -18,6 +19,14 @@ repo_owner = "srikanth57-coder"
 repo_name = "mushroom_prediction_new"
 mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
 model_name = "Best Model"  # Update to the actual model name you're using
+
+# Define a function to load the model with retry logic
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
+def load_model_with_retry(model_uri):
+    """
+    Attempts to load the model from the provided URI, retrying up to 3 times if it fails.
+    """
+    return mlflow.pyfunc.load_model(model_uri)
 
 
 class TestModelLoading(unittest.TestCase):
@@ -54,21 +63,19 @@ class TestModelLoading(unittest.TestCase):
         run_id = versions[0].run_id
 
         # Correct URI for loading the model from the Staging stage
-        logged_model = f"runs:/{run_id}/{model_name}/staging"  # Correct format for staging alias
+        model_uri = f"runs:/{run_id}/{model_name}/staging"  # Correct format for staging alias
         try:
-            loaded_model = mlflow.pyfunc.load_model(logged_model)
-            print(f"Model version {latest_version} loaded successfully from {logged_model}.")
+            # Using the retry function to load the model with retries
+            loaded_model = load_model_with_retry(model_uri)
+            print(f"Model version {latest_version} loaded successfully from {model_uri}.")
         except Exception as e:
             # Fail the test if an exception occurs during model loading
-            self.fail(f"Failed to load the model: {e}")
+            self.fail(f"Failed to load the model after retries: {e}")
 
         # Assert that the loaded model is not None
         self.assertIsNotNone(loaded_model, "The loaded model is None.")
-        print(f"Model successfully loaded from {logged_model}.")
+        print(f"Model successfully loaded from {model_uri}.")
 
 
 if __name__ == "__main__":
     unittest.main()
-
-
-
