@@ -2,7 +2,6 @@ import unittest
 import mlflow
 from mlflow.tracking import MlflowClient
 import os
-import pandas as pd
 
 # Ensure the DAGSHUB_TOKEN environment variable is set
 dagshub_token = os.getenv("DAGSHUB_TOKEN")
@@ -52,10 +51,9 @@ class TestModelLoading(unittest.TestCase):
 
         # Get the version details of the latest model in the 'Staging' stage
         latest_version = versions[0].version
-        run_id = versions[0].run_id
 
-        # Load the model from the 'Staging' stage
-        model_uri = f"runs/{run_id}/{model_name}"
+        # Correct URI for loading the model from the Staging stage
+        model_uri = f"models/{model_name}/staging"  # Correct format for staging alias
         try:
             loaded_model = mlflow.pyfunc.load_model(model_uri)
             print(f"Model version {latest_version} loaded successfully from {model_uri}.")
@@ -70,4 +68,6 @@ class TestModelLoading(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
 
