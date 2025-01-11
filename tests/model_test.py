@@ -51,19 +51,20 @@ class TestModelLoading(unittest.TestCase):
 
         # Get the version details of the latest model in the 'Staging' stage
         latest_version = versions[0].version
+        run_id = versions[0].run_id
 
         # Correct URI for loading the model from the Staging stage
-        model_uri = f"models/{model_name}/staging"  # Correct format for staging alias
+        logged_model = f"runs:/{run_id}/{model_name}/staging"  # Correct format for staging alias
         try:
-            loaded_model = mlflow.pyfunc.load_model(model_uri)
-            print(f"Model version {latest_version} loaded successfully from {model_uri}.")
+            loaded_model = mlflow.pyfunc.load_model(logged_model)
+            print(f"Model version {latest_version} loaded successfully from {logged_model}.")
         except Exception as e:
             # Fail the test if an exception occurs during model loading
             self.fail(f"Failed to load the model: {e}")
 
         # Assert that the loaded model is not None
         self.assertIsNotNone(loaded_model, "The loaded model is None.")
-        print(f"Model successfully loaded from {model_uri}.")
+        print(f"Model successfully loaded from {logged_model}.")
 
 
 if __name__ == "__main__":
