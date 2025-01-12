@@ -34,7 +34,37 @@ def promote_model_to_production():
 
         # Get the version details of the latest model in the 'Staging' stage
         latest_version = versions[0]
-        version_number = latest_version.version
+        staging_version_number = latest_version.version
 
         # Get the current production model ,if any
-        
+        production_versions = client.get_latest_versions(model_name,stages=["production"])
+
+        if production_versions:
+             current_production_versions = production_versions[0]
+             production_version_number = current_production_versions.version
+
+             #transition the current production model to archived
+             client.transition_model_version_stage(
+                  name=model_name,
+                  version=production_version_number,
+                  stage ="Archived",
+                  archive_existing_versions=False,
+             )
+
+             print(f"Archived model version {production_version_number} in 'Production'.")
+        else:
+             print("no model currently in 'Production'.")
+
+
+        # transition the latest staging model to production
+        client.transition_model_version_stage(
+                  name=model_name,
+                  version=staging_version_number,
+                  stage ="Production",
+                  archive_existing_versions=False,
+             )
+        print(f"promoted model version {staging_version_number} to 'Production'.")
+
+if __name__ == "__main__":
+    promote_model_to_production.main()
+
