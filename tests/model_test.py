@@ -66,7 +66,7 @@ class TestModelLoading(unittest.TestCase):
         model_uri = f"runs:/{run_id}/{model_name}/staging"  # Correct format for staging alias
         try:
             # Using the retry function to load the model with retries
-            loaded_model = load_model_with_retry(model_uri)
+            loaded_model = mlflow.pyfunc.load_model(model_uri)
         except Exception as e:
             # Fail the test if an exception occurs during model loading
             self.fail(f"Failed to load the model after retries: {e}")
