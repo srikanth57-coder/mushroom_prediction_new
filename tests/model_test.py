@@ -67,7 +67,6 @@ class TestModelLoading(unittest.TestCase):
         try:
             # Using the retry function to load the model with retries
             loaded_model = load_model_with_retry(model_uri)
-            print(f"Model version {latest_version} loaded successfully from {model_uri}.")
         except Exception as e:
             # Fail the test if an exception occurs during model loading
             self.fail(f"Failed to load the model after retries: {e}")
