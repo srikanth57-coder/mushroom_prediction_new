@@ -66,5 +66,5 @@ def promote_model_to_production():
         print(f"promoted model version {staging_version_number} to 'Production'.")
 
 if __name__ == "__main__":
-    promote_model_to_production.main()
+    promote_model_to_production()
 
