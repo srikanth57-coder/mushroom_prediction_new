@@ -95,7 +95,7 @@ class TestModelLoading(unittest.TestCase):
 
         loaded_model = mlflow.pyfunc.load_model(model_uri)
 
-        test_data_path = "./data/processed/test_processed.csv"
+        test_data_path = "./data/processed/test_processed_scaler.csv"
 
         # Ensure test data exists
         if not os.path.exists(test_data_path):
