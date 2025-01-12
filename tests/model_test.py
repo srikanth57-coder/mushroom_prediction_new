@@ -63,7 +63,7 @@ class TestModelLoading(unittest.TestCase):
         run_id = versions[0].run_id
 
         # Correct URI for loading the model from the Staging stage
-        model_uri = f"runs:/{run_id}/{model_name}/staging"  # Correct format for staging alias
+        model_uri = f"runs:/{run_id}/{model_name}"  # Correct format for staging alias
         try:
             # Using the retry function to load the model with retries
             loaded_model = mlflow.pyfunc.load_model(model_uri)
