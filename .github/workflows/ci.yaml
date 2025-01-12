@@ -38,5 +38,5 @@ jobs:
       if: success()
       env:
         DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
-      run: python Scripts/production.py
+      run: python scripts/production.py
     
