@@ -20,13 +20,13 @@ repo_name = "mushroom_prediction_new"
 mlflow.set_tracking_uri(f"{dagshub_url}/{repo_owner}/{repo_name}.mlflow")
 model_name = "Best Model"  # Update to the actual model name you're using
 
-# Define a function to load the model with retry logic
-@retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
+import mlflow
+from tenacity import retry, wait_exponential, stop_after_attempt
+
+@retry(wait=wait_exponential(min=2, max=30), stop=stop_after_attempt(10))
 def load_model_with_retry(model_uri):
-    """
-    Attempts to load the model from the provided URI, retrying up to 3 times if it fails.
-    """
     return mlflow.pyfunc.load_model(model_uri)
+
 
 
 class TestModelLoading(unittest.TestCase):
