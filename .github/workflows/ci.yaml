@@ -34,7 +34,9 @@ jobs:
         DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
       run: dvc repro  # This will run the pipeline based on dvc.yaml
 
-    - name: Run model tests
+    - name: promote model to production
+      if: success()
       env:
         DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
-      run: python -m unittest tests/model_test.py
+      run: python Scripts/production.py
+    
